@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aether Core — Personal Cognitive Engine</title>
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --surface: #111114;
+      --border: #1e1e24;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --accent: #7c6af7;
+      --accent2: #4fa3e0;
+      --green: #3ecf8e;
+      --yellow: #f5a623;
+      --red: #e05c5c;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; font-size: 15px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero { padding: 5rem 2rem 4rem; text-align: center; border-bottom: 1px solid var(--border); }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 1rem; }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub { color: var(--muted); max-width: 560px; margin: 0 auto 2rem; font-size: 1.05rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    .badge { font-size: 0.72rem; padding: 0.3rem 0.75rem; border: 1px solid var(--border); border-radius: 20px; color: var(--muted); letter-spacing: 0.05em; }
+    .badge.accent { border-color: var(--accent); color: var(--accent); }
+    .badge.green { border-color: var(--green); color: var(--green); }
+    .sister-callout { margin-top: 2rem; padding: 1rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: inline-block; text-align: left; }
+    .sister-callout .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.3rem; }
+    .sister-callout a { font-weight: 600; }
+
+    /* SECTIONS */
+    .section { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+    .section h2 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.6rem; }
+    .section-intro { color: var(--muted); max-width: 620px; margin-bottom: 2.5rem; }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* MEMORY TYPES */
+    .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .memory-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+    .memory-card .type { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.5rem; }
+    .memory-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .memory-card p { font-size: 0.85rem; color: var(--muted); }
+
+    /* MODULES */
+    .modules { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .module { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 180px 1fr; gap: 1.5rem; align-items: start; }
+    .module:last-child { border-bottom: none; }
+    .module:hover { background: var(--surface); }
+    .module-name { font-family: 'SF Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--accent2); }
+    .module-port { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
+    .module h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .module p { font-size: 0.85rem; color: var(--muted); }
+
+    /* API TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead th { text-align: left; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    tbody td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); }
+    tbody tr:last-child td { border-bottom: none; }
+    .method { font-family: 'SF Mono', monospace; font-size: 0.8rem; font-weight: 700; }
+    .method.get { color: var(--green); }
+    .method.post { color: var(--accent); }
+    .method.delete { color: var(--red); }
+    code { font-family: 'SF Mono', monospace; font-size: 0.82rem; background: var(--surface); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
+
+    /* ROADMAP */
+    .roadmap { display: flex; flex-direction: column; gap: 0; }
+    .roadmap-item { padding: 1.2rem 1.5rem; border: 1px solid var(--border); border-bottom: none; display: flex; align-items: center; gap: 1.2rem; }
+    .roadmap-item:first-child { border-radius: 10px 10px 0 0; }
+    .roadmap-item:last-child { border-bottom: 1px solid var(--border); border-radius: 0 0 10px 10px; }
+    .roadmap-item:hover { background: var(--surface); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot.done { background: var(--green); }
+    .dot.active { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+    .dot.planned { background: var(--border); }
+    .roadmap-item .phase-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; width: 60px; flex-shrink: 0; }
+    .roadmap-item .phase-name { font-weight: 600; font-size: 0.92rem; flex: 1; }
+    .status-badge { font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .status-badge.done { background: rgba(62,207,142,0.1); color: var(--green); border: 1px solid rgba(62,207,142,0.3); }
+    .status-badge.active { background: rgba(124,106,247,0.1); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
+    .status-badge.planned { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+
+    /* TECH STACK */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; }
+    .tech-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; }
+    .tech-row .layer { color: var(--muted); font-size: 0.78rem; }
+    .tech-row .value { font-weight: 600; text-align: right; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; color: var(--muted); font-size: 0.82rem; }
+    footer .ecosystem { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Part of the Aether Ecosystem · Personal Intelligence Layer</p>
+  <h1>Aether <span>Core</span></h1>
+  <p class="hero-sub">Personal cognitive engine — individual memory, reasoning, and emotional context for human-centric AI.</p>
+  <div class="badges">
+    <span class="badge green">Phase 0 Complete — Scaffold</span>
+    <span class="badge accent">Phase 1 In Progress</span>
+    <span class="badge">Java 21</span>
+    <span class="badge">Spring Boot 3.3</span>
+    <span class="badge">pgvector</span>
+    <span class="badge">Port 8082</span>
+  </div>
+  <div class="sister-callout" style="margin-top:2rem;">
+    <div class="label">Sister Repository</div>
+    <a href="https://github.com/suplab/aether-grid">suplab/aether-grid</a> — Enterprise agent mesh. Grid's <code>AetherCoreBridgeAgent</code> calls Core before every agent decision.
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- MEMORY TYPES -->
+<section class="section">
+  <p class="section-label">Memory Model</p>
+  <h2>Four Types of Personal Memory</h2>
+  <p class="section-intro">Every piece of knowledge is classified, embedded (384-dim), and stored in PostgreSQL with pgvector. Memories strengthen on access and decay when unused.</p>
+
+  <div class="memory-grid">
+    <div class="memory-card">
+      <div class="type">Episodic</div>
+      <h3>Events</h3>
+      <p>Specific experiences: "I presented the Q3 roadmap on Tuesday to 12 stakeholders."</p>
+    </div>
+    <div class="memory-card">
+      <div class="type">Semantic</div>
+      <h3>Facts</h3>
+      <p>General knowledge: "Alice is a machine learning engineer at Acme."</p>
+    </div>
+    <div class="memory-card">
+      <div class="type">Procedural</div>
+      <h3>Skills</h3>
+      <p>How-to knowledge: "I prefer bullet-point summaries over prose paragraphs."</p>
+    </div>
+    <div class="memory-card">
+      <div class="type">Emotional</div>
+      <h3>Feelings</h3>
+      <p>Emotional states: "MOTIVATED — I feel energised after completing the sprint."</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- MODULES -->
+<section class="section">
+  <p class="section-label">Architecture</p>
+  <h2>Module Structure</h2>
+  <p class="section-intro">Hexagonal architecture — port interfaces in core-domain, adapters in core-memory, Spring Boot app in core-api.</p>
+
+  <div class="modules">
+    <div class="module">
+      <div>
+        <div class="module-name">core-domain</div>
+        <div class="module-port">No Spring dependency</div>
+      </div>
+      <div>
+        <h3>Domain Types + Port Interfaces</h3>
+        <p>PersonalMemory, MemoryType, CognitiveSession, PersonalContext records. PersonalMemoryStore and PersonalContextProvider port interfaces.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div>
+        <div class="module-name">core-memory</div>
+        <div class="module-port">Spring JDBC adapter</div>
+      </div>
+      <div>
+        <h3>pgvector Store + Embedding</h3>
+        <p>PGVectorPersonalMemoryStore: cosine similarity search, upsert. PersonalEmbeddingService: Ollama all-MiniLM-L6-v2 (384-dim), graceful fallback.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div>
+        <div class="module-name">core-api</div>
+        <div class="module-port">Port 8082</div>
+      </div>
+      <div>
+        <h3>Spring Boot Application</h3>
+        <p>PersonalContextController (Grid integration endpoint), PersonalMemoryController, Flyway migrations, actuator probes, CoreApiConfig wiring.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div>
+        <div class="module-name">core-infra</div>
+        <div class="module-port">Infrastructure</div>
+      </div>
+      <div>
+        <h3>Docker + Migrations</h3>
+        <p>Docker Compose (postgres-core on 5433, aether-core on 8082). Standalone Flyway migrations. Kubernetes Helm chart planned in Phase 6.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- API CONTRACT -->
+<section class="section">
+  <p class="section-label">API Contract</p>
+  <h2>REST Endpoints</h2>
+  <p class="section-intro">The key endpoint is consumed by Aether Grid's <code>AetherCoreBridgeAgent</code>. The contract must not break without coordinated Grid updates.</p>
+
+  <table>
+    <thead>
+      <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td><code>/api/v1/personal-context/{tenantId}/{userId}</code></td>
+        <td>Personal context snapshot — consumed by Aether Grid</td>
+      </tr>
+      <tr>
+        <td><span class="method post">POST</span></td>
+        <td><code>/api/v1/users/{userId}/memories</code></td>
+        <td>Store a new personal memory (type + content)</td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td><code>/api/v1/users/{userId}/memories/count</code></td>
+        <td>Total memory count for a user</td>
+      </tr>
+      <tr>
+        <td><span class="method delete">DELETE</span></td>
+        <td><code>/api/v1/users/{userId}/memories/{memoryId}</code></td>
+        <td>Delete a specific memory</td>
+      </tr>
+      <tr>
+        <td><span class="method get">GET</span></td>
+        <td><code>/actuator/health</code></td>
+        <td>Liveness + readiness probes</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider"/>
+
+<!-- ROADMAP -->
+<section class="section">
+  <p class="section-label">Roadmap</p>
+  <h2>Development Phases</h2>
+  <p class="section-intro">Each phase is a logical, committable chunk of the cognitive engine build-out.</p>
+
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="dot done"></div>
+      <div class="phase-label">Phase 0</div>
+      <div class="phase-name">Scaffold — Independent Maven project, domain model, API, migrations, docs</div>
+      <span class="status-badge done">Complete</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot active"></div>
+      <div class="phase-label">Phase 1</div>
+      <div class="phase-name">Personal Memory Engine — reinforce-on-read, PersonalContextProvider, integration tests</div>
+      <span class="status-badge active">In Progress</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot planned"></div>
+      <div class="phase-label">Phase 2</div>
+      <div class="phase-name">Cognitive Session Management — multi-turn context, preference store</div>
+      <span class="status-badge planned">Planned</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot planned"></div>
+      <div class="phase-label">Phase 3</div>
+      <div class="phase-name">GDPR + Privacy Controls — right to erasure, data retention, memory export</div>
+      <span class="status-badge planned">Planned</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot planned"></div>
+      <div class="phase-label">Phase 4</div>
+      <div class="phase-name">Grid Feedback Loop — Kafka consumer for aether.core.feedback, personal learning</div>
+      <span class="status-badge planned">Planned</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot planned"></div>
+      <div class="phase-label">Phase 5</div>
+      <div class="phase-name">Memory Decay + Reinforcement Scheduler</div>
+      <span class="status-badge planned">Planned</span>
+    </div>
+    <div class="roadmap-item">
+      <div class="dot planned"></div>
+      <div class="phase-label">Phase 6</div>
+      <div class="phase-name">Kubernetes + Helm — multi-platform deployment (vanilla K8s, EKS, OpenShift)</div>
+      <span class="status-badge planned">Planned</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECH STACK -->
+<section class="section">
+  <p class="section-label">Technology</p>
+  <h2>Stack</h2>
+  <div class="tech-grid">
+    <div class="tech-row"><span class="layer">Language</span><span class="value">Java 21 (--enable-preview)</span></div>
+    <div class="tech-row"><span class="layer">Framework</span><span class="value">Spring Boot 3.3.5</span></div>
+    <div class="tech-row"><span class="layer">Database</span><span class="value">PostgreSQL 16 + pgvector</span></div>
+    <div class="tech-row"><span class="layer">Vector Search</span><span class="value">pgvector ivfflat, 384-dim</span></div>
+    <div class="tech-row"><span class="layer">Embedding</span><span class="value">all-MiniLM-L6-v2 (Ollama)</span></div>
+    <div class="tech-row"><span class="layer">Migrations</span><span class="value">Flyway (V001–V002)</span></div>
+    <div class="tech-row"><span class="layer">Build</span><span class="value">Maven multi-module</span></div>
+    <div class="tech-row"><span class="layer">Local Dev</span><span class="value">Docker Compose</span></div>
+    <div class="tech-row"><span class="layer">API Port</span><span class="value">8082</span></div>
+    <div class="tech-row"><span class="layer">CI</span><span class="value">GitHub Actions (OIDC)</span></div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<footer>
+  <div class="ecosystem">
+    <strong>Aether Ecosystem</strong> ·
+    <strong>Aether Core</strong> (suplab/aether-core) ←
+    <a href="https://github.com/suplab/aether-grid">Aether Grid</a> (suplab/aether-grid)
+  </div>
+  <div>Personal Cognitive Engine · Phase 0 Complete · Built by Suplab</div>
+</footer>
+
+</body>
+</html>
