@@ -31,3 +31,21 @@ aether:
       model: ${EMBEDDING_MODEL:all-minilm}
     context:
       memory-limit: ${CONTEXT_MEMORY_LIMIT:5}
+    memory:
+      decay:
+        factor: ${MEMORY_DECAY_FACTOR:0.05}
+        purge-threshold: ${MEMORY_PURGE_THRESHOLD:0.05}
+        idle-threshold-days: ${MEMORY_IDLE_THRESHOLD_DAYS:7}
+        cron: ${MEMORY_DECAY_CRON:"0 0 2 * * *"}
+        purge-cron: ${MEMORY_PURGE_CRON:"0 0 3 * * SUN"}
+    kafka:
+      enabled: ${KAFKA_ENABLED:false}
+      feedback-topic: ${KAFKA_FEEDBACK_TOPIC:aether.core.feedback}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:aether-core}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

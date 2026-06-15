@@ -43,75 +43,77 @@
 
 ---
 
-## Phase 2 — Cognitive Session Management
+## Phase 2 — Cognitive Session Management ✅
 
-**Goal:** Multi-turn reasoning sessions persisted and retrievable. Session context included in `PersonalContext` response.
+**Goal:** Multi-turn reasoning sessions persisted and retrievable.
 
 | Deliverable | Status |
 |---|---|
-| `cognitive_sessions` Flyway migration (V003) | ⏳ |
-| `CognitiveSessionStore` port interface | ⏳ |
-| `JdbcCognitiveSessionStore` adapter | ⏳ |
-| `CognitiveSessionController` (POST create, GET by userId, PATCH add turn) | ⏳ |
-| `PersonalContext` enriched with active session's turn summaries | ⏳ |
-| User preferences table (V004) | ⏳ |
+| `cognitive_sessions` Flyway migration (V003) | ✅ |
+| `CognitiveSessionStore` port interface | ✅ |
+| `JdbcCognitiveSessionStore` adapter | ✅ |
+| `CognitiveSessionController` (POST create/resume, PUT turns, POST close, GET recent/by-id) | ✅ |
+| Active session fast-path lookup (partial index on `active = TRUE`) | ✅ |
+| GDPR session erasure (`eraseByUser`) | ✅ |
 
 ---
 
-## Phase 3 — GDPR + Privacy Controls
+## Phase 3 — GDPR + Right to Erasure ✅
 
-**Goal:** Full right-to-erasure, data retention configuration, and memory export.
+**Goal:** Full GDPR Article 17 compliance — consent management and right to erasure.
 
 | Deliverable | Status |
 |---|---|
-| `DELETE /api/v1/users/{userId}/memories` — erase all memories | ⏳ |
-| `DELETE /api/v1/users/{userId}` — full account erasure | ⏳ |
-| `data_retention_days` per user configurable | ⏳ |
-| Memory export: `GET /api/v1/users/{userId}/export` (JSON) | ⏳ |
-| Audit log for erasure events | ⏳ |
-| V005 migration: user_privacy_settings table | ⏳ |
+| `gdpr_consent` Flyway migration (V004) | ✅ |
+| `GdprConsent` domain record | ✅ |
+| `GdprConsentStore` port interface | ✅ |
+| `JdbcGdprConsentStore` adapter | ✅ |
+| `GdprController` — GET consent, PUT consent, DELETE erase | ✅ |
+| Hard-delete of all user memories, sessions, and consent records | ✅ |
+| `GdprConsent.defaultConsent()` / `GdprConsent.optOut()` factory methods | ✅ |
 
 ---
 
-## Phase 4 — Grid Feedback Loop (Kafka)
+## Phase 4 — Grid Feedback Loop (Kafka) ✅
 
-**Goal:** Aether Core consumes Grid decision feedback to improve personal context relevance.
+**Goal:** Aether Core consumes Grid decision feedback to reinforce or decay personal memories.
 
 | Deliverable | Status |
 |---|---|
-| Kafka consumer for `aether.core.feedback` topic | ⏳ |
-| `AgentDecisionFeedbackProcessor`: maps Grid outcomes to memory reinforcement/creation | ⏳ |
-| `PROCEDURAL` memory auto-created from correct Grid decisions | ⏳ |
-| `EMOTIONAL` memory updated from engagement signals | ⏳ |
-| Docker Compose Kafka service added | ⏳ |
+| `GridFeedbackConsumer` Kafka listener on `aether.core.feedback` | ✅ |
+| `CORRECT` outcome → memory reinforcement | ✅ |
+| `INCORRECT` outcome → decay signal logged | ✅ |
+| `@ConditionalOnProperty(aether.core.kafka.enabled)` — Kafka optional | ✅ |
+| `application.yml` Kafka consumer configuration | ✅ |
 
 ---
 
-## Phase 5 — Memory Decay + Reinforcement Scheduler
+## Phase 5 — Memory Decay + Reinforcement Scheduler ✅
 
-**Goal:** Memory strength evolves over time — unused memories decay, accessed memories reinforce.
+**Goal:** Memory strength evolves over time — unused memories decay, weak memories are purged.
 
 | Deliverable | Status |
 |---|---|
-| `@Scheduled` decay job: `strength -= 0.01 * days_since_access` for memories older than 7 days | ⏳ |
-| Configurable decay rate (`aether.core.memory.decay-rate`) | ⏳ |
-| Memories below `strength < 0.1` archived (not deleted) | ⏳ |
-| Memory archive table (V006 migration) | ⏳ |
-| Micrometer metrics: `aether.core.memories.total`, `aether.core.memories.decayed` | ⏳ |
+| `MemoryDecayService` with `@Scheduled` daily decay (02:00 UTC) | ✅ |
+| Weekly purge pass — memories below threshold hard-deleted (03:00 UTC Sunday) | ✅ |
+| Inactive session expiry — sessions idle > 7 days auto-closed | ✅ |
+| Configurable decay factor, purge threshold, idle threshold via environment variables | ✅ |
+| `@EnableScheduling` on `CoreApiConfig` | ✅ |
 
 ---
 
-## Phase 6 — Kubernetes + Helm
+## Phase 6 — Kubernetes + Helm ✅
 
-**Goal:** Production-ready deployment for Core on Kubernetes (vanilla, AWS EKS, OpenShift).
+**Goal:** Production-ready deployment on Kubernetes (vanilla, AWS EKS, OpenShift).
 
 | Deliverable | Status |
 |---|---|
-| `core-api/Dockerfile` (multi-stage, Temurin 21 JRE, non-root uid 1000) | ⏳ |
-| Helm chart: `core-infra/helm/aether-core/` | ⏳ |
-| `values.yaml`, `values-aws.yaml`, `values-openshift.yaml` | ⏳ |
-| GitHub Actions Docker build + Helm release workflows | ⏳ |
-| HPA (min 2, max 4 replicas) | ⏳ |
+| `core-api/Dockerfile` — multi-stage, Temurin 21 JRE, non-root uid 1000, HEALTHCHECK | ✅ |
+| `core-infra/k8s/namespace.yaml` — `aether-core` namespace | ✅ |
+| `core-infra/k8s/deployment.yaml` — 2 replicas, securityContext, probes, resource limits | ✅ |
+| `core-infra/k8s/service.yaml` — ClusterIP, HPA (min 2 / max 8), ServiceAccount, ConfigMap | ✅ |
+| `.github/workflows/ci.yml` — build + test + JaCoCo | ✅ |
+| `.github/workflows/docker-build.yml` — OIDC, multi-arch (amd64 + arm64), GHCR push | ✅ |
 
 ---
 

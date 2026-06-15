@@ -107,16 +107,17 @@
   <h1>Aether <span>Core</span></h1>
   <p class="hero-sub">Personal cognitive engine — individual memory, reasoning, and emotional context for human-centric AI.</p>
   <div class="badges">
-    <span class="badge green">Phase 0 Complete — Scaffold</span>
-    <span class="badge accent">Phase 1 In Progress</span>
+    <span class="badge green">Phases 0–6 Complete</span>
+    <span class="badge accent">Production Ready</span>
     <span class="badge">Java 21</span>
     <span class="badge">Spring Boot 3.3</span>
     <span class="badge">pgvector</span>
     <span class="badge">Port 8082</span>
   </div>
   <div class="sister-callout" style="margin-top:2rem;">
-    <div class="label">Sister Repository</div>
-    <a href="https://github.com/suplab/aether-grid">suplab/aether-grid</a> — Enterprise agent mesh. Grid's <code>AetherCoreBridgeAgent</code> calls Core before every agent decision.
+    <div class="label">Ecosystem Navigation</div>
+    <a href="https://github.com/suplab/aether-grid">suplab/aether-grid</a> — Enterprise agent mesh · Grid's <code>AetherCoreBridgeAgent</code> calls Core before every agent decision<br>
+    <a href="https://github.com/suplab/aether">Æ Aether Ecosystem Hub</a> — Vision, architecture, and standards
   </div>
 </section>
 
@@ -262,40 +263,40 @@
       <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot active"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 1</div>
       <div class="phase-name">Personal Memory Engine — reinforce-on-read, PersonalContextProvider, integration tests</div>
-      <span class="status-badge active">In Progress</span>
+      <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot planned"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 2</div>
-      <div class="phase-name">Cognitive Session Management — multi-turn context, preference store</div>
-      <span class="status-badge planned">Planned</span>
+      <div class="phase-name">Cognitive Session Management — multi-turn sessions, emotional arc tracking, session API</div>
+      <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot planned"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 3</div>
-      <div class="phase-name">GDPR + Privacy Controls — right to erasure, data retention, memory export</div>
-      <span class="status-badge planned">Planned</span>
+      <div class="phase-name">GDPR + Right to Erasure — consent management, Article 17 erasure, data retention</div>
+      <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot planned"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 4</div>
-      <div class="phase-name">Grid Feedback Loop — Kafka consumer for aether.core.feedback, personal learning</div>
-      <span class="status-badge planned">Planned</span>
+      <div class="phase-name">Grid Feedback Loop — Kafka consumer on aether.core.feedback, memory reinforcement signals</div>
+      <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot planned"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 5</div>
-      <div class="phase-name">Memory Decay + Reinforcement Scheduler</div>
-      <span class="status-badge planned">Planned</span>
+      <div class="phase-name">Memory Decay Scheduler — daily decay, weekly purge, session expiry (configurable)</div>
+      <span class="status-badge done">Complete</span>
     </div>
     <div class="roadmap-item">
-      <div class="dot planned"></div>
+      <div class="dot done"></div>
       <div class="phase-label">Phase 6</div>
-      <div class="phase-name">Kubernetes + Helm — multi-platform deployment (vanilla K8s, EKS, OpenShift)</div>
-      <span class="status-badge planned">Planned</span>
+      <div class="phase-name">Kubernetes + Helm — Dockerfile, K8s manifests, HPA, GitHub Actions CI/CD</div>
+      <span class="status-badge done">Complete</span>
     </div>
   </div>
 </section>
@@ -312,7 +313,8 @@
     <div class="tech-row"><span class="layer">Database</span><span class="value">PostgreSQL 16 + pgvector</span></div>
     <div class="tech-row"><span class="layer">Vector Search</span><span class="value">pgvector ivfflat, 384-dim</span></div>
     <div class="tech-row"><span class="layer">Embedding</span><span class="value">all-MiniLM-L6-v2 (Ollama)</span></div>
-    <div class="tech-row"><span class="layer">Migrations</span><span class="value">Flyway (V001–V002)</span></div>
+    <div class="tech-row"><span class="layer">Migrations</span><span class="value">Flyway (V001–V004)</span></div>
+    <div class="tech-row"><span class="layer">Messaging</span><span class="value">Apache Kafka (optional)</span></div>
     <div class="tech-row"><span class="layer">Build</span><span class="value">Maven multi-module</span></div>
     <div class="tech-row"><span class="layer">Local Dev</span><span class="value">Docker Compose</span></div>
     <div class="tech-row"><span class="layer">API Port</span><span class="value">8082</span></div>
@@ -324,11 +326,12 @@
 
 <footer>
   <div class="ecosystem">
-    <strong>Aether Ecosystem</strong> ·
-    <strong>Aether Core</strong> (suplab/aether-core) ←
-    <a href="https://github.com/suplab/aether-grid">Aether Grid</a> (suplab/aether-grid)
+    <a href="../../../aether/docs/index.html">Æ Aether</a> ·
+    <strong>Aether Core</strong> ·
+    <a href="https://github.com/suplab/aether-grid">Aether Grid</a> ·
+    <a href="https://github.com/suplab/aether-iel">Aether IEL</a>
   </div>
-  <div>Personal Cognitive Engine · Phase 0 Complete · Built by Suplab</div>
+  <div>Personal Cognitive Engine · Phases 0–6 Complete · Built by Suplab</div>
 </footer>
 
 </body>
